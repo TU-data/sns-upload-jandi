@@ -13,7 +13,20 @@ function buildMessage(schedules, today) {
     return `📅 오늘(${dateLabel}) SNS 업로드 일정이 없습니다.`;
   }
 
-  const lines = [`📅 오늘(${dateLabel}) SNS 업로드 일정 — 총 ${schedules.length}건\n`];
+  const statusCount = {};
+  schedules.forEach((item) => {
+    statusCount[item.status] = (statusCount[item.status] || 0) + 1;
+  });
+  const 예정 = statusCount["예정"] || 0;
+  const 컨펌완료 = statusCount["컨펌 완료"] || 0;
+  const 업로드완료 = statusCount["업로드 완료"] || 0;
+  const summary = `예정 ${예정}건 / 컨펌 완료 ${컨펌완료}건 / 업로드 완료 ${업로드완료}건`;
+
+  const lines = [
+    `📅 오늘(${dateLabel}) SNS 업로드 일정 — 총 ${schedules.length}건`,
+    summary,
+    "",
+  ];
 
   schedules.forEach((item, i) => {
     lines.push(`${i + 1}. ${item.title}`);
