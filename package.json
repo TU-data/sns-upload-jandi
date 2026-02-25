@@ -1,0 +1,13 @@
+{
+  "name": "sns-upload-jandi",
+  "version": "1.0.0",
+  "description": "Notion SNS 업로드 일정을 매일 잔디로 알림 전송",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.15",
+    "node-fetch": "^3.3.2"
+  }
+}
