@@ -23,6 +23,15 @@ jobs:
       - name: 의존성 설치
         run: npm ci
 
+      - name: Secret 전달 확인 (디버그)
+        run: |
+          echo "NOTION_TOKEN 길이: ${#NOTION_TOKEN}"
+          echo "NOTION_TOKEN 앞 10자: ${NOTION_TOKEN:0:10}"
+          echo "NOTION_DATABASE_ID 길이: ${#NOTION_DATABASE_ID}"
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+
       - name: 일정 알림 전송
         run: node index.js
         env:
