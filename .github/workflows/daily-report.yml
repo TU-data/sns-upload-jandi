@@ -2,8 +2,8 @@ name: SNS 업로드 일정 알림
 
 on:
   schedule:
-    # 매일 오전 10시 KST = 01:00 UTC
-    - cron: "0 1 * * *"
+    # 매일 오전 9시 KST = 00:00 UTC
+    - cron: "0 0 * * *"
   workflow_dispatch: # 수동 실행 가능
 
 jobs:
@@ -22,12 +22,6 @@ jobs:
 
       - name: 의존성 설치
         run: npm ci
-
-      - name: 인증 진단
-        run: node debug.js
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
 
       - name: 일정 알림 전송
         run: node index.js
