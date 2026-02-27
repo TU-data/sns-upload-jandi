@@ -2,6 +2,20 @@ const { Client } = require("@notionhq/client");
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
+function formatDatetime(dateStr) {
+  // "2026-02-25" or "2026-02-25T10:00:00.000+09:00"
+  const date = new Date(dateStr);
+  const kst = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+  const y = kst.getUTCFullYear();
+  const m = kst.getUTCMonth() + 1;
+  const d = kst.getUTCDate();
+  const hasTime = dateStr.includes("T");
+  if (!hasTime) return `${y}년 ${m}월 ${d}일`;
+  const h = String(kst.getUTCHours()).padStart(2, "0");
+  const min = String(kst.getUTCMinutes()).padStart(2, "0");
+  return `${y}년 ${m}월 ${d}일 ${h}:${min}`;
+}
+
 function getKSTDateString() {
   const now = new Date();
   // UTC 기준으로 KST(+9) 날짜 계산
@@ -61,6 +75,11 @@ async function getTodaySchedule() {
     const assignees =
       props["담당자"]?.people?.map((p) => p.name).join(", ") || "-";
 
+    const dateRaw = props["일시"]?.date?.start || null;
+    const datetime = dateRaw ? formatDatetime(dateRaw) : "-";
+
+    const notionUrl = page.url;
+
     return {
       title,
       status,
@@ -68,6 +87,8 @@ async function getTodaySchedule() {
       snsAccount,
       collaborator,
       assignees,
+      datetime,
+      notionUrl,
     };
   });
 }

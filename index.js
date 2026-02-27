@@ -2,7 +2,7 @@ const { getTodaySchedule, getKSTDateString } = require("./notion");
 const { sendToJandi } = require("./jandi");
 
 function formatDate(dateStr) {
-  const [year, month, day] = dateStr.split("-");
+  const [, month, day] = dateStr.split("-");
   return `${parseInt(month)}/${parseInt(day)}`;
 }
 
@@ -30,6 +30,7 @@ function buildMessage(schedules, today) {
 
   schedules.forEach((item, i) => {
     lines.push(`${i + 1}. ${item.title}`);
+    lines.push(`   🕐 일시: ${item.datetime}`);
     lines.push(`   📣 계정: ${item.snsAccount}`);
     if (item.collaborator && item.collaborator !== "-") {
       lines.push(`   🤝 공동계정: ${item.collaborator}`);
@@ -37,6 +38,7 @@ function buildMessage(schedules, today) {
     lines.push(`   👤 담당자: ${item.assignees}`);
     lines.push(`   🏷 팀: ${item.team}`);
     lines.push(`   ✅ 상태: ${item.status}`);
+    lines.push(`   🔗 ${item.notionUrl}`);
     if (i < schedules.length - 1) lines.push("");
   });
 
